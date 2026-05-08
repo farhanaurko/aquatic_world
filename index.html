@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Aquatic wonders | deep ocean life</title>
+  <!-- Font & simple icons via Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, sans-serif;
+      background: linear-gradient(145deg, #02111b 0%, #0a2f44 100%);
+      color: #e0f2fe;
+      display: flex;
+      min-height: 100vh;
+      transition: all 0.2s ease;
+    }
+
+    /* ----- RIGHT NAVIGATION (vertical, fixed on right side) ----- */
+    .right-nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 260px;
+      height: 100vh;
+      background: rgba(2, 20, 30, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: -8px 0 30px rgba(0, 180, 255, 0.2);
+      border-left: 2px solid rgba(0, 210, 255, 0.4);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.2rem;
+      z-index: 100;
+      transition: all 0.3s;
+    }
+
+    .nav-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #7fd9ff;
+      text-shadow: 0 0 12px #0088cc;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      border-bottom: 2px dashed #2aa9c9;
+      padding-bottom: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      flex: 1;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid rgba(90, 200, 250, 0.5);
+      color: #c6edff;
+      padding: 0.9rem 1.2rem;
+      border-radius: 40px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 100, 140, 0.15);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-btn i {
+      font-size: 1.3rem;
+      width: 28px;
+      color: #4cd0ff;
+    }
+
+    .nav-btn:hover {
+      background: rgba(0, 190, 255, 0.3);
+      border-color: #7fd9ff;
+      box-shadow: 0 0 20px #0099ff;
+      transform: translateX(-5px);
+      color: white;
+    }
+
+    .nav-btn.active {
+      background: #00a6ff33;
+      border-color: #ffffff;
+      box-shadow: 0 0 28px #00b7ff;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    /* main content area (leaves space for right nav) */
+    .main-content {
+      margin-right: 280px;
+      width: 100%;
+      padding: 2.5rem 3rem;
+      transition: 0.3s;
+    }
+
+    /* page sections (hidden/shown via JS) */
+    .page {
+      display: none;
+      animation: fadeSlide 0.5s ease;
+    }
+
+    .page.active-page {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0.3; transform: translateY(15px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* cards & aquatic style */
+    .hero {
+      text-align: center;
+      margin-bottom: 2.8rem;
+    }
+
+    .hero h1 {
+      font-size: 3.3rem;
+      background: linear-gradient(to right, #a0e9ff, #4fc3f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 30px #006994;
+    }
+
+    .creature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 30px;
+      padding: 1.8rem 1.5rem;
+      border: 1px solid rgba(78, 204, 255, 0.45);
+      box-shadow: 0 20px 35px rgba(0, 20, 50, 0.7);
+      transition: 0.3s ease;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: #82e6ff;
+      box-shadow: 0 28px 45px #003755;
+    }
+
+    .card img {
+      width: 100%;
+      max-width: 220px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 25px;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 12px 25px rgba(0,160,210,0.6);
+      border: 2px solid #4eb3d4;
+    }
+
+    .card h3 {
+      font-size: 1.8rem;
+      color: #cef2ff;
+      margin-bottom: 0.7rem;
+    }
+
+    .card p {
+      color: #b0e0f0;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .fun-fact {
+      margin-top: 1rem;
+      font-style: italic;
+      background: #00395280;
+      padding: 0.6rem 0.8rem;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      color: #d4f4ff;
+    }
+
+    .home-intro {
+      font-size: 1.3rem;
+      max-width: 800px;
+      margin: 1.5rem auto;
+      background: #012b3b70;
+      padding: 2rem;
+      border-radius: 70px;
+      backdrop-filter: blur(10px);
+    }
+
+    hr {
+      border: 1px solid #1e6b8f;
+      margin: 2rem 0 1rem;
+      opacity: 0.5;
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      color: #6b9eb3;
+      text-align: center;
+    }
+
+    @media (max-width: 750px) {
+      body {
+        flex-direction: column;
+      }
+      .right-nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .main-content {
+        margin-right: 0;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- RIGHT SIDE NAVIGATION -->
+  <nav class="right-nav">
+    <div class="nav-title"><i class="fas fa-water"></i> AquaNav</div>
+    <div class="nav-links">
+      <button class="nav-btn active" data-page="home"><i class="fas fa-home"></i> Home</button>
+      <button class="nav-btn" data-page="deepsea"><i class="fas fa-fish"></i> Deep Sea</button>
+      <button class="nav-btn" data-page="reef"><i class="fas fa-coral"></i> Coral Reef</button>
+      <button class="nav-btn" data-page="freshwater"><i class="fas fa-faucet"></i> Freshwater</button>
+      <button class="nav-btn" data-page="giants"><i class="fas fa-whale"></i> Ocean Giants</button>
+    </div>
+    <div style="margin-top: auto; font-size: 0.8rem; opacity:0.7; text-align:center;">
+      <i class="far fa-compass"></i> aquatic wonders
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="main-content">
+    <!-- HOME PAGE -->
+    <div id="home" class="page active-page">
+      <div class="hero">
+        <h1>🌊 Aquatic Universe</h1>
+        <p class="home-intro">
+          Dive into the mysterious blue world. From glowing deep-sea creatures to vibrant coral cities — explore random facts about Earth's wondrous aquatic life.
+        </p>
+      </div>
+      <div class="creature-grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=400&h=300&fit=crop" alt="Colorful octopus">
+          <h3>Octopus</h3>
+          <p>Masters of camouflage with three hearts and blue blood.</p>
+          <div class="fun-fact">✨ They can squeeze through any hole larger than their beak.</div>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1597284940115-8c16f9b0f08f?w=400&h=300&fit=crop" alt="Sea turtle">
+          <h3>Sea Turtle</h3>
+          <p>Ancient mariners that travel thousands of miles.</p>
+          <div class="fun-fact">🐢 Some species can hold breath for 5 hours underwater.</div>
+        </div>
+      </div>
+      <hr>
+      <p style="text-align:center;">Click navigation buttons to explore more habitats.</p>
+    </div>
+
+    <!-- DEEP SEA PAGE -->
+    <div id="deepsea" class="page">
+      <div class="hero">
+        <h1>🦑 Deep Sea Creatures</h1>
+        <p style="font-size:1.2rem;">Bioluminescence & extreme survival</p>
+      </div>
+      <div class="creature-grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop" alt="Anglerfish">
+          <h3>Anglerfish</h3>
+          <p>Females have a glowing lure to attract prey in total darkness.</p>
+          <div class="fun-fact">💡 Males are tiny and fuse permanently to females!</div>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1583212292454-9f9e4b2e7b4c?w=400&h=300&fit=crop" alt="Vampire squid">
+          <h3>Vampire Squid</h3>
+          <p>Deep-ocean dweller with light-producing organs.</p>
+          <div class="fun-fact">🩸 It turns inside-out to scare predators.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CORAL REEF PAGE -->
+    <div id="reef" class="page">
+      <div class="hero">
+        <h1>🐠 Coral Reef Life</h1>
+        <p style="font-size:1.2rem;">Rainforests of the sea</p>
+      </div>
+      <div class="creature-grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=400&h=300&fit=crop" alt="Clownfish">
+          <h3>Clownfish</h3>
+          <p>Immune to anemone stings, they live in symbiosis.</p>
+          <div class="fun-fact">🐟 All clownfish are born male; dominant becomes female.</div>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1587139223887-407154af76c2?w=400&h=300&fit=crop" alt="Mantis shrimp">
+          <h3>Mantis Shrimp</h3>
+          <p>Packs a punch as fast as a bullet, seeing 12 color channels.</p>
+          <div class="fun-fact">🌈 Their claws create underwater shockwaves.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRESHWATER PAGE -->
+    <div id="freshwater" class="page">
+      <div class="hero">
+        <h1>💧 Freshwater Wonders</h1>
+        <p style="font-size:1.2rem;">Rivers, lakes & hidden streams</p>
+      </div>
+      <div class="creature-grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=400&h=300&fit=crop" alt="Axolotl">
+          <h3>Axolotl</h3>
+          <p>Mexican walking fish that stays in larval form forever.</p>
+          <div class="fun-fact">🧬 Can regenerate entire limbs, spinal cord, and heart.</div>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1598756259093-35d7b0d3e17b?w=400&h=300&fit=crop" alt="Electric eel">
+          <h3>Electric Eel</h3>
+          <p>Generates shocks up to 600 volts to stun prey.</p>
+          <div class="fun-fact">⚡ Not actually an eel – a type of knifefish!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OCEAN GIANTS PAGE -->
+    <div id="giants" class="page">
+      <div class="hero">
+        <h1>🐋 Ocean Giants</h1>
+        <p style="font-size:1.2rem;">The largest animals on Earth</p>
+      </div>
+      <div class="creature-grid">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1564655604611-f1c9b7f6a8d3?w=400&h=300&fit=crop" alt="Blue whale">
+          <h3>Blue Whale</h3>
+          <p>Heart size of a small car; tongue weighs as much as elephant.</p>
+          <div class="fun-fact">🌍 Loudest animal – calls heard for hundreds of miles.</div>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=400&h=300&fit=crop" alt="Whale shark">
+          <h3>Whale Shark</h3>
+          <p>Gentle filter-feeder, up to 40 feet long.</p>
+          <div class="fun-fact">🦈 Each has unique spot pattern like a fingerprint.</div>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <i class="far fa-life-ring"></i>  random aquatic facts • images from Unsplash <i class="fas fa-fish"></i>
+    </footer>
+  </main>
+
+  <script>
+    (function() {
+      // page switching logic
+      const navButtons = document.querySelectorAll('.nav-btn');
+      const pages = document.querySelectorAll('.page');
+
+      function switchPage(pageId) {
+        // Hide all pages
+        pages.forEach(page => {
+          page.classList.remove('active-page');
+        });
+        // Show selected page
+        const activePage = document.getElementById(pageId);
+        if (activePage) {
+          activePage.classList.add('active-page');
+        }
+        // Update active button styling
+        navButtons.forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.getAttribute('data-page') === pageId) {
+            btn.classList.add('active');
+          }
+        });
+      }
+
+      // Attach click event to each nav button
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const pageId = this.getAttribute('data-page');
+          if (pageId) {
+            switchPage(pageId);
+          }
+        });
+      });
+
+      // Ensure home is active by default (already in HTML, but just in case)
+      // Also handle if someone tries to load with hash (optional)
+      const defaultPage = 'home';
+      const currentActive = document.querySelector('.page.active-page');
+      if (!currentActive) {
+        switchPage(defaultPage);
+      } else {
+        // sync button active with current active page id
+        const activePageId = currentActive.id;
+        navButtons.forEach(btn => {
+          if (btn.getAttribute('data-page') === activePageId) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
